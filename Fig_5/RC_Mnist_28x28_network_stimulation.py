@@ -177,7 +177,7 @@ if not os.path.exists(newpath):
 #%% TRAIN digits
 
 def train_mp(digit):
-    
+
     G = define_grid_graph_2(xdim, ydim)
     G = initialize_graph_attributes(G, g0) 
     
@@ -185,7 +185,7 @@ def train_mp(digit):
     
     H_list_write = [[] for t in range(0, timesteps_write+read_timesteps+1)]
     
-    train_pulse= dataset_to_pulse(digit_rows, digit_cols, timesteps_write, pulse_timesteps+1, idle_timesteps+1, digit_train, digit, pulse_amplitude)
+    train_pulse, _ = dataset_to_pulse(digit_rows, digit_cols, timesteps_write, pulse_timesteps+1, idle_timesteps+1, digit_train, digit, pulse_amplitude)
     
     Vin_list_write = [[] for t in range(0, timesteps_write)]
 
@@ -243,7 +243,6 @@ if __name__ == '__main__':
 
 def test_mp(digit):
     
-    
     G = define_grid_graph_2(xdim, ydim)
     G = initialize_graph_attributes(G, g0) 
     
@@ -251,7 +250,7 @@ def test_mp(digit):
     
     H_list_write = [[] for t in range(0, timesteps_write+read_timesteps+1)]
     
-    test_pulse = dataset_to_pulse(digit_rows, digit_cols, timesteps_write, pulse_timesteps+1, idle_timesteps+1, digit_test, digit, pulse_amplitude)
+    test_pulse, _ = dataset_to_pulse(digit_rows, digit_cols, timesteps_write, pulse_timesteps+1, idle_timesteps+1, digit_test, digit, pulse_amplitude)
     
     Vin_list_write = [[] for t in range(0, timesteps_write)]
 
@@ -275,7 +274,7 @@ def test_mp(digit):
         G = update_edge_weigths(G, delta_t, g_min, g_max, kp0, eta_p, kd0, eta_d)                                  #update edges
         
         if i in int_point:
-            fname = './output_MNIST/'+'test_'+str(digit+start_test)+'_t_'+str(int_point.index(i))+'.txt'
+            fname = './output_MNIST_graph/'+'test_'+str(digit+start_test)+'_t_'+str(int_point.index(i))+'.txt'
             pickle.dump(G, open(fname, 'wb'))
             
         insert_R_to_graph(G, R_read, src, new_nodes, gnd)
